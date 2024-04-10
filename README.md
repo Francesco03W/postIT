@@ -3,6 +3,9 @@
 postIT is a simple open source tool to keep track of things to do.
 
 ## Technical information
+
+GNU/Linux:
+
 Using the c++17 standard
 
 Debug build 
