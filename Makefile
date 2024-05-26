@@ -1,5 +1,6 @@
 CC=g++
 SOURCE=postIT.cpp
+
 # compiler options to differentiate between debug flags and release flags
 CC_DEBUG_MODE=-ggdb
 CC_RELEASE_MODE=-O2 -DNDEBUG
@@ -8,9 +9,26 @@ CC_MAX_WARNING_LEVEL=-Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion
 CC_WARNINGS_AS_ERRORS=-Werror
 CC_LANG_STANDARD=-std=c++17
 
-# la debug-build ha come requisito i file SOURCE, se esistono e modificati -> build
+# find on windows != find on linux...
+
+IMGUI_SRC_FOLDER=lib\imgui
+IMGUI_BACKEND_FOLDER=lib\imgui\backends
+
+## GNU Make - Wildcard Function - Portable ##
+# compile imgui 
+IMGUI_SRC_CPP_FILES=$(wildcard $(IMGUI_SRC_FOLDER)/*.cpp)
+IMGUI_SRC_H_FILES=$(wildcard $(IMGUI_SRC_FOLDER)/*.h)
+
+# compile imgui API backends
+IMGUI_PLATFORM_CPP_FILES=$(wildcard $(IMGUI_BACKEND_FOLDER)/imgui_impl_sdl2.cpp)
+IMGUI_PLATFORM_H_FILES=$(wildcard $(IMGUI_BACKEND_FOLDER)/imgui_impl_sdl2.h)
+IMGUI_RENDERER_CPP_FILES=$(wildcard $(IMGUI_BACKEND_FOLDER)/imgui_sdlrenderer2.cpp)
+IMGUI_RENDERER_H_FILES=$(wildcard $(IMGUI_BACKEND_FOLDER)/imgui_sdlrenderer2.h)
+
+
+# pedantic compiler
 debug-build: $(SOURCE)
-	$(CC) $(SOURCE) $(DEBUG_ARGS) -o $@
+	$(CC) $(SOURCE) $(IMGUI_SRC_CPP_FILES) $(IMGUI_SRC_H_FILES) $(DEBUG_ARGS) -o $@
 $(DEBUG_ARGS): $(CC_DEBUG_MODE) $(CC_DISABLE_COMPILER_EXTENSION_FLAG) $(CC_MAX_WARNING_LEVEL) $(CC_WARNINGS_AS_ERRORS) $(CC_LANG_STANDARD)
 
 release-build: $(SOURCE)
