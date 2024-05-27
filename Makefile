@@ -9,26 +9,29 @@ CC_MAX_WARNING_LEVEL=-Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion
 CC_WARNINGS_AS_ERRORS=-Werror
 CC_LANG_STANDARD=-std=c++17
 
-# find on windows != find on linux...
 
-IMGUI_SRC_FOLDER=lib\imgui
-IMGUI_BACKEND_FOLDER=lib\imgui\backends
+
+# instead of adding manually the .h files to the compiler, just use -I option to find them in directories instead
+IMGUI_SRC_FOLDER=lib/imgui
+IMGUI_BACKEND_FOLDER=lib/imgui/backends
+SDL_FOLDER=lib/SDL2-2.30.3/include
+
 
 ## GNU Make - Wildcard Function - Portable ##
 # compile imgui 
 IMGUI_SRC_CPP_FILES=$(wildcard $(IMGUI_SRC_FOLDER)/*.cpp)
-IMGUI_SRC_H_FILES=$(wildcard $(IMGUI_SRC_FOLDER)/*.h)
+#IMGUI_SRC_H_FILES=$(wildcard $(IMGUI_SRC_FOLDER)/*.h)
 
 # compile imgui API backends
 IMGUI_PLATFORM_CPP_FILES=$(wildcard $(IMGUI_BACKEND_FOLDER)/imgui_impl_sdl2.cpp)
-IMGUI_PLATFORM_H_FILES=$(wildcard $(IMGUI_BACKEND_FOLDER)/imgui_impl_sdl2.h)
+#IMGUI_PLATFORM_H_FILES=$(wildcard $(IMGUI_BACKEND_FOLDER)/imgui_impl_sdl2.h)
 IMGUI_RENDERER_CPP_FILES=$(wildcard $(IMGUI_BACKEND_FOLDER)/imgui_sdlrenderer2.cpp)
-IMGUI_RENDERER_H_FILES=$(wildcard $(IMGUI_BACKEND_FOLDER)/imgui_sdlrenderer2.h)
+#IMGUI_RENDERER_H_FILES=$(wildcard $(IMGUI_BACKEND_FOLDER)/imgui_sdlrenderer2.h)
 
 
 # pedantic compiler
 debug-build: $(SOURCE)
-	$(CC) $(SOURCE) $(IMGUI_SRC_CPP_FILES) $(IMGUI_SRC_H_FILES) $(DEBUG_ARGS) -o $@
+	$(CC) $(SOURCE) -I$(IMGUI_SRC_FOLDER) -I$(IMGUI_BACKEND_FOLDER) -I$(SDL_FOLDER)  $(IMGUI_SRC_CPP_FILES) $(IMGUI_PLATFORM_CPP_FILES) $(IMGUI_RENDERER_CPP_FILES) $(DEBUG_ARGS) -o $@
 $(DEBUG_ARGS): $(CC_DEBUG_MODE) $(CC_DISABLE_COMPILER_EXTENSION_FLAG) $(CC_MAX_WARNING_LEVEL) $(CC_WARNINGS_AS_ERRORS) $(CC_LANG_STANDARD)
 
 release-build: $(SOURCE)
