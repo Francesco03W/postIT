@@ -12,12 +12,15 @@ CC_LANG_STANDARD=-std=c++17
 
 
 # instead of adding manually the .h files to the compiler, just use -I option to find them in directories instead
-IMGUI_SRC_FOLDER=lib/imgui
-IMGUI_BACKEND_FOLDER=lib/imgui/backends
-SDL_FOLDER=lib/SDL2-2.30.3/include
+
+# Portability issue: Windows uses \, GNU/Linux /
+IMGUI_SRC_FOLDER=lib\imgui
+IMGUI_BACKEND_FOLDER=lib\imgui\backends
+SDL_FOLDER=lib\SDL2-2.30.3\include
 
 
 ## GNU Make - Wildcard Function - Portable ##
+
 # compile imgui 
 IMGUI_SRC_CPP_FILES=$(wildcard $(IMGUI_SRC_FOLDER)/*.cpp)
 #IMGUI_SRC_H_FILES=$(wildcard $(IMGUI_SRC_FOLDER)/*.h)
