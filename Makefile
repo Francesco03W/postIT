@@ -14,7 +14,7 @@ CC_LANG_STANDARD=-std=c++17
 # instead of adding manually the .h files to the compiler, just use -I option to find them in directories instead
 IMGUI_SRC_FOLDER=lib/imgui
 IMGUI_BACKEND_FOLDER=lib/imgui/backends
-SDL_FOLDER=lib/SDL2-2.30.3/include
+SDL_FOLDER=/usr/local/include/SDL2
 
 
 ## GNU Make - Wildcard Function - Portable ##
@@ -31,7 +31,7 @@ IMGUI_RENDERER_CPP_FILES=$(wildcard $(IMGUI_BACKEND_FOLDER)/imgui_sdlrenderer2.c
 
 # pedantic compiler
 debug-build: $(SOURCE)
-	$(CC) $(SOURCE) -I$(IMGUI_SRC_FOLDER) -I$(IMGUI_BACKEND_FOLDER) -I$(SDL_FOLDER)  $(IMGUI_SRC_CPP_FILES) $(IMGUI_PLATFORM_CPP_FILES) $(IMGUI_RENDERER_CPP_FILES) $(DEBUG_ARGS) -o $@
+	$(CC) $(SOURCE) -L/usr/local/lib -Wl, -Bstatic -lSDL2 -Wl, -Bdynamic -lm -ldl -I$(IMGUI_SRC_FOLDER) -I$(IMGUI_BACKEND_FOLDER) -I$(SDL_FOLDER)  $(IMGUI_SRC_CPP_FILES) $(IMGUI_PLATFORM_CPP_FILES) $(IMGUI_RENDERER_CPP_FILES) $(DEBUG_ARGS) -o $@
 $(DEBUG_ARGS): $(CC_DEBUG_MODE) $(CC_DISABLE_COMPILER_EXTENSION_FLAG) $(CC_MAX_WARNING_LEVEL) $(CC_WARNINGS_AS_ERRORS) $(CC_LANG_STANDARD)
 
 release-build: $(SOURCE)
